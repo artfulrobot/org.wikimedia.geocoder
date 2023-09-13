@@ -56,9 +56,13 @@ final class UKPostcodeProvider extends AbstractProvider implements Provider
 
       $builder = new AddressBuilder($this->getName());
       if ($result->fetch()) {
+        \Civi::log()->info("Got result for '$postcodeNoSpace': lat: $result->latitude long: $result->longitude and pc: '$result->postcode'");
         $builder->setCoordinates($result->latitude, $result->longitude);
         $builder->setPostalCode($result->postcode);
         return new AddressCollection([$builder->build()]);
+      }
+      else {
+        \Civi::log()->info("Got no result for '$postcodeNoSpace'");
       }
 
       throw new CollectionIsEmpty();

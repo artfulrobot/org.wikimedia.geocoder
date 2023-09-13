@@ -158,6 +158,7 @@ final class AddressBuilder
         try {
             $this->coordinates = new Coordinates($latitude, $longitude);
         } catch (InvalidArgument $e) {
+            \Civi::log()->error("Invalid coordinates: " . json_encode(['lat' => $latitude, 'lon' => $longitude, 'error' => $e->getMessage()]), ['exception' => $e]);
             $this->coordinates = null;
         }
 

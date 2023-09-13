@@ -113,9 +113,12 @@ class CRM_Utils_Geocode_Geocoder {
 
         $geocoderObj = new \Geocoder\StatefulGeocoder($provider, $locale);
         $result = $geocoderObj->geocodeQuery(GeocodeQuery::create($geocodableAddress));
+        // \Civi::log()->info('Geocoder result.locations.0:' . json_encode($result->locations[0]));
 
+        \Civi::log()->info('Geocoder retained_response_fields :' . $geocoder['retained_response_fields']);
         foreach (json_decode($geocoder['retained_response_fields'], TRUE) as $fieldName) {
           $values[$fieldName] = self::getValueFromResult($fieldName, $result, $values);
+          \Civi::log()->info('Geocoder trying :' . json_encode($fieldName) . " and got: " . json_encode($values[$fieldName]));
         }
         if (!empty($geocoder['datafill_response_fields'])) {
           foreach (json_decode($geocoder['datafill_response_fields'], TRUE) as $fieldName) {
